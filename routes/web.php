@@ -37,9 +37,13 @@ Route::prefix('/admin/post')->name('admin.post.')->group(function(){
     
     Route::get('/',[PostController::class,'index'])->name('index');
 
-    Route::post('searchPost',[PostController::class,'index'])->name('searchPost');
+    Route::get('/create',[PostController::class,'create'])->name('create');
 
     Route::post('/store',[PostController::class,'store'])->name('store');
+
+    Route::post('searchPost',[PostController::class,'index'])->name('searchPost');
+
+    Route::get('/{id}',[PostController::class,'edit'])->name('edit');
 
     Route::put('/{id}',[PostController::class,'update'])->name('update');
 

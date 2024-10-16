@@ -16,10 +16,10 @@ class Post extends Model
         'image',
         'author',
         'created_at',
-        'detail_id'
+        'category_id'
     ];
-    public function detail(){
-        //thiết lập quan hệ khóa ngoại với detail !
-        return $this->belongsTo(Detail::class,'detail_id');
+    public function category(){
+        //thiết lập quan hệ khóa ngoại với category !
+        return $this->belongsTo(Category::class,'category_id');
     }
 }

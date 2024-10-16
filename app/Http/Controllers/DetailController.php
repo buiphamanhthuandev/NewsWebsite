@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Category;
 use App\Models\Detail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -16,21 +18,21 @@ class DetailController extends Controller
     {
         // dd($request);
         //lấy danh sách theo tên trả table
-        $details = Detail::where('state',1)->get();
+        $categories = Category::where('state',1)->get();
 
         //lấy danh sách theo id trả form 
-        $detail_id = null;
-        if($request->has('detail_id')){
-            $detail_id = Detail::findOrFail($request->detail_id);
+        $category_id = null;
+        if($request->has('category_id')){
+            $category_id = Category::findOrFail($request->category_id);
         }
         
         //lấy danh sách theo tên trả table tìm kiếm
-        $nameDetails = null;
-        if($request->has('nameDetail')){
+        $nameCategories = null;
+        if($request->has('nameCategory')){
             
-            $nameDetails = Detail::where('name','LIKE','%'.$request->nameDetail.'%')->get();
+            $nameCategories = Category::where('name','LIKE','%'.$request->nameCategory.'%')->get();
         }
-        return view('admin.detail.index',compact('details','detail_id','nameDetails'));
+        return view('admin.detail.index',compact('categories','category_id','nameCategories'));
     }
 
     /**
@@ -56,8 +58,8 @@ class DetailController extends Controller
             'description' => 'required'
         ]);
 
-        $details = Detail::create($data);
-        return redirect(route('admin.detail.index'))->with('success','detail create thành công');
+        $categories = Category::create($data);
+        return redirect(route('admin.detail.index'))->with('success','Category create thành công');
     }
 
     /**
@@ -95,9 +97,9 @@ class DetailController extends Controller
             'name'=>'required',
             'description'=>'required'
         ]);
-        $detail = Detail::findOrFail($id);
-        $detail->update($data);
-        return redirect(route('admin.detail.index'))->with('success','detail update thành công');
+        $category = Category::findOrFail($id);
+        $category->update($data);
+        return redirect(route('admin.detail.index'))->with('success','Category update thành công');
     }
 
     /**
@@ -108,8 +110,8 @@ class DetailController extends Controller
      */
     public function destroy($id)
     {
-        $detail = Detail::findOrFail($id);
-        $detail->update(['state' => 0]);
-        return redirect(route('admin.detail.index'))->with('success','detail delete thành công');
+        $category = Category::findOrFail($id);
+        $category->update(['state' => 0]);
+        return redirect(route('admin.detail.index'))->with('success','category delete thành công');
     }
 }

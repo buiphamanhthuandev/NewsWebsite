@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
-class Detail extends Model
+class Category extends Model
 {
     use HasFactory;
-    protected $table = "details";
     protected $fillable = [
         'id',
         'name',
@@ -19,6 +17,6 @@ class Detail extends Model
     ]; 
     public function posts(){
         //quan hệ 1,n với post
-        return $this->hasMany(Post::class,'detail_id');
+        return $this->hasMany(Post::class,'category_id');
     }
 }

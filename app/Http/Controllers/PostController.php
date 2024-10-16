@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Detail;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -15,21 +16,14 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $details = Detail::where('state',1)->get();
-        $posts = Post::with('detail')->get();
-
-        //lấy danh sách theo id trả về form
-        $post_id = null;
-        if($request->has('post_id')){
-            $post_id = Post::findOrFail($request->post_id);
-        }
+        $posts = Post::with('category')->get();
 
         //lấy danh sách theo tên trả về table
         $namePosts = null;
         if($request->has('namePost')){
-            $namePosts = Post::where('name','LIKE','%'.$request->namePost.'%')->with('detail')->get();
+            $namePosts = Post::where('name','LIKE','%'.$request->namePost.'%')->with('category')->get();
         }
-        return view('admin.post.index',compact('posts','details','post_id','namePosts'));
+        return view('admin.post.index',compact('posts','namePosts'));
     }
 
     /**
@@ -39,7 +33,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::where('state',1)->get();
+        return view('admin.post.create',compact('categories'));
     }
 
     /**
@@ -81,7 +76,11 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        //lấy danh sách theo id trả về form
+        $post_id = null;
+        $post_id = Post::findOrFail($id);
+        $categories = Category::where('state',1)->get();
+        return view('admin.post.edit',compact('post_id','categories'));
     }
 
     /**
@@ -99,7 +98,7 @@ class PostController extends Controller
             'content'=>'required',
             'author'=>'required',
             'detail_id'=>'required',
-            'image'=>'required'
+            'image'=>'nullable|image|mimes|:jpeg|png|jpg|gif|max:2048'
         ]);
         $post = Post::findOrFail($id);
         $post->update($data);

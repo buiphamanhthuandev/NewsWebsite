@@ -11,46 +11,8 @@
     @endif
 </div>
 
-<h4>Form điền thông tin:</h4>
-<form action="{{isset($post_id) ?  route('admin.post.update',$post_id->id) : route('admin.post.store')}}" method="post">
-    @csrf
-    @if (isset($post_id))
-        @method('put')
-    @else
-        @method('post')
-    @endif
 
-    <div class="form-group">
-        <label for="Name">Name:</label>
-        <input type="text" class="form-control" id="Name" name="name" placeholder="Name..." value="{{isset($post_id) ? $post_id->name : ''}}">
-    </div>
-    <div class="form-group">
-        <label for="Content">Content:</label>
-        <input type="text" class="form-control" id="Content" name="content" placeholder="Content..." value="{{isset($post_id) ? $post_id->content : ''}}">
-    </div>
-    <div class="form-group">
-        <label for="Author">Author:</label>
-        <input type="text" class="form-control" id="Author" name="author" placeholder="Author..." value="{{isset($post_id) ? $post_id->author : ''}}">
-    </div>
-    <div class="form-group">
-        <label for="Description">Detail:</label>
-        <select class="form-control" name="detail_id" id="Detail_id">
-            @foreach ($details as $detail)
-                <option value="{{$detail->id}}">{{$detail->name}}</option> 
-            
-            @endforeach
-
-        </select>
-    </div>
-    
-    <div class="form-group">
-        <label for="Image">Image:</label>
-        <input type="text" class="form-control" id="Image" name="image" placeholder="Image..." value="{{isset($post_id) ? $post_id->image : ''}}">
-    </div>
-    <button type="submit" class="btn btn-default">{{isset($post_id) ? 'Update' : 'Add'}}</button>
-</form>
-
-
+<h4> <a href="{{route('admin.post.create')}}">Thêm bài viết</a></h4>
 <h4>Tìm kiếm tên bài viết:</h4>
 <form class="form-inline" method="POST" action="{{route('admin.post.searchPost')}}">
     @csrf
@@ -64,7 +26,7 @@
 
 <div>
     @if (isset($namePosts))
-    <h4>Danh sách tìm kiếm tên liên hệ</h4>
+    <h4>Danh sách tìm kiếm tên bài viết</h4>
     <div class="col-lg-12">
         <div class="panel panel-default">
             <!-- /.panel-heading -->
@@ -137,7 +99,7 @@
                                 <td>{{$post->author}}</td>
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->detail ? $post->detail->name : 'Warning detail'}}</td>
-                                <td><a href="{{ route('admin.post.index', ['post_id' => $post->id]) }}" class="btn btn-warning">Edit</a></td>
+                                <td><a href="{{ route('admin.post.edit', ['id' => $post->id]) }}" class="btn btn-warning">Edit</a></td>
                                 <td>
                                     <form action="{{route('admin.post.destroy',$post->id)}}" method="post">
                                         @csrf

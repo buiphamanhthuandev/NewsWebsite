@@ -11,9 +11,9 @@
     @endif
 </div>
 <h4>Form điền thông tin:</h4>
-<form action="{{isset($detail_id) ? route('admin.detail.update', $detail_id->id) : route('admin.detail.store')}}" method="post">
+<form action="{{isset($category_id) ? route('admin.detail.update', $category_id->id) : route('admin.detail.store')}}" method="post">
     @csrf
-    @if (isset($detail_id))
+    @if (isset($category_id))
         @method('put')
     @else
         @method('post')
@@ -21,13 +21,13 @@
     
     <div class="form-group">
       <label for="Name">Name:</label>
-      <input type="text" class="form-control" id="Name" name="name" placeholder="Name..." value="{{isset($detail_id) ? $detail_id->name : ''}}">
+      <input type="text" class="form-control" id="Name" name="name" placeholder="Name..." value="{{isset($category_id) ? $category_id->name : ''}}">
     </div>
     <div class="form-group">
       <label for="Description">Description:</label>
-      <input type="text" class="form-control" id="Description" name="description" placeholder="Description..." value="{{isset($detail_id) ? $detail_id->description : ''}}">
+      <input type="text" class="form-control" id="Description" name="description" placeholder="Description..." value="{{isset($category_id) ? $category_id->description : ''}}">
     </div>
-    <button type="submit" class="btn btn-default">{{isset($detail_id) ? 'Update':'Add'}}</button>
+    <button type="submit" class="btn btn-default">{{isset($category_id) ? 'Update':'Add'}}</button>
 </form>
 <h4>Tìm kiếm tên chi tiết:</h4>
 <form class="form-inline" method="POST" action="{{route('admin.detail.searchDetail')}}">
@@ -35,13 +35,13 @@
     @method('post')
     <div class="form-group">
       <label class="sr-only" for="Name">Name</label>
-      <input type="text" class="form-control" id="Name" placeholder="Name" name="nameDetail">
+      <input type="text" class="form-control" id="Name" placeholder="Name" name="nameCategory">
     </div>
     <button type="submit" class="btn btn-default">Search</button>
 </form>
 
 <div>
-    @if (isset($nameDetails))
+    @if (isset($nameCategories))
     <h4>Danh sách tìm kiếm tên chi tiết</h4>
     <div class="col-lg-12">
         <div class="panel panel-default">
@@ -58,12 +58,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($nameDetails as $nameDetail)
+                            @foreach ($nameCategories as $nameCategory)
                                 <tr>
-                                    <td>{{$nameDetail->id}}</td>
-                                    <td>{{$nameDetail->name}}</td>
-                                    <td>{{$nameDetail->description}}</td>
-                                    <td>{{$nameDetail->created_at}}</td>
+                                    <td>{{$nameCategory->id}}</td>
+                                    <td>{{$nameCategory->name}}</td>
+                                    <td>{{$nameCategory->description}}</td>
+                                    <td>{{$nameCategory->created_at}}</td>
                                 </tr>
                             @endforeach
                             
@@ -97,15 +97,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($details as $detail)
+                        @foreach ($categories as $category)
                             <tr>
-                                <td>{{$detail->id}}</td>
-                                <td>{{$detail->name}}</td>
-                                <td>{{$detail->description}}</td>
-                                <td>{{$detail->created_at}}</td>
-                                <td><a href="{{route('admin.detail.index',['detail_id' => $detail->id])}}" class="btn btn-warning">Edit</a></td>
+                                <td>{{$category->id}}</td>
+                                <td>{{$category->name}}</td>
+                                <td>{{$category->description}}</td>
+                                <td>{{$category->created_at}}</td>
+                                <td><a href="{{route('admin.detail.index',['category_id' => $category->id])}}" class="btn btn-warning">Edit</a></td>
                                 <td>
-                                    <form action="{{route('admin.detail.destroy',$detail->id)}}" method="post">
+                                    <form action="{{route('admin.detail.destroy',$category->id)}}" method="post">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" class="btn btn-danger">Del</button>
