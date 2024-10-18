@@ -15,26 +15,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $contacts = Contact::all();
-
-        $subscribes = Subscribe::all();
-
-        $nameContacts = null;
-        if($request->has('nameContact')){
-            $nameContacts = Contact::where('name','LIKE','%'.$request->nameContact.'%')->get();
-        }
-        return view('admin.home.index',compact('contacts','nameContacts','subscribes'));
+        return view('admin.home.index');
     }
 
 
-    // //hàm searchContact 
-    // public function searchContact(Request $request){
-    //     $nameContacts = null;
-    //     if($request->has('nameContact')){
-    //         $nameContacts = Contact::where('name','LIKE','%'.$request->nameContact.'%')->get();
-    //     }
-    //     return view('admin.home.index',compact('nameContacts'))->with('searchSuccess',true);
-    // }
 
     /**
      * Show the form for creating a new resource.

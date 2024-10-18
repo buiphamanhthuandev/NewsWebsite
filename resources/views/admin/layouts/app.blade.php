@@ -14,23 +14,20 @@
         <!-- MetisMenu CSS -->
         <link href="{{asset('admin/css/metisMenu.min.css')}}" rel="stylesheet">
 
-        <!-- Timeline CSS -->
-        <link href="{{asset('admin/css/timeline.css')}}" rel="stylesheet">
-
-        <!-- Custom CSS -->
-        <link href="{{asset('admin/css/startmin.css')}}" rel="stylesheet">
-
-        <!-- Morris Charts CSS -->
-        <link href="{{asset('admin/css/morris.css')}}" rel="stylesheet">
-
-        <!-- Custom Fonts -->
-        <link href="{{asset('admin/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
-        
         <!-- DataTables CSS -->
         <link href="{{asset('admin/css/dataTables/dataTables.bootstrap.css')}}" rel="stylesheet">
 
         <!-- DataTables Responsive CSS -->
         <link href="{{asset('admin/css/dataTables/dataTables.responsive.css')}}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{asset('admin/css/startmin.css')}}" rel="stylesheet">
+
+
+        <!-- Custom Fonts -->
+        <link href="{{asset('admin/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        
+        
  
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -54,10 +51,11 @@
                 <div class="container-fluid">
                     <div class="row">
                         @yield('content')
-                    </div>            
+                    </div>    
                 </div>
             </div>
         </div>
+
         <!-- /#wrapper -->
         
         <!-- jQuery -->
@@ -69,19 +67,13 @@
         <!-- Metis Menu Plugin JavaScript -->
         <script src="{{asset('admin/js/metisMenu.min.js')}}"></script>
 
-        <!-- Morris Charts JavaScript -->
-        <script src="{{asset('admin/js/raphael.min.js')}}"></script>
-        <script src="{{asset('admin/js/morris.min.js')}}"></script>
-        <script src="{{asset('admin/js/morris-data.js')}}"></script>
+         <!-- DataTables JavaScript -->
+         <script src="{{asset('admin/js/dataTables/jquery.dataTables.min.js')}}"></script>
 
+         <script src="{{asset('admin/js/dataTables/dataTables.bootstrap.min.js')}}"></script>
         <!-- Custom Theme JavaScript -->
         <script src="{{asset('admin/js/startmin.js')}}"></script>
 
-
-        <!-- DataTables JavaScript -->
-        <script src="{{asset('admin/js/dataTables/jquery.dataTables.min.js')}}"></script>
-
-        <script src="{{asset('admin/js/dataTables/dataTables.bootstrap.min.js')}}"></script>
 
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
         <script>

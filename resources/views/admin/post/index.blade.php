@@ -12,62 +12,7 @@
 </div>
 
 
-<h4> <a href="{{route('admin.post.create')}}">Thêm bài viết</a></h4>
-<h4>Tìm kiếm tên bài viết:</h4>
-<form class="form-inline" method="POST" action="{{route('admin.post.searchPost')}}">
-    @csrf
-    @method('post')
-    <div class="form-group">
-      <label class="sr-only" for="Name">Name</label>
-      <input type="text" class="form-control" id="Name" placeholder="Name" name="namePost">
-    </div>
-    <button type="submit" class="btn btn-default">Search</button>
-</form>
-
-<div>
-    @if (isset($namePosts))
-    <h4>Danh sách tìm kiếm tên bài viết</h4>
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <!-- /.panel-heading -->
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Content</th>
-                                <th>Author</th>
-                                <th>Create_at</th>
-                                <th>Detail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($namePosts as $namePost)
-                                <tr>
-                                    <td>{{$namePost->id}}</td>
-                                    <td>{{$namePost->image}}</td>
-                                    <td>{{$namePost->name}}</td>
-                                    <td>{{$namePost->content}}</td>
-                                    <td>{{$namePost->author}}</td>
-                                    <td>{{$namePost->created_at}}</td>
-                                    <td>{{$namePost->detail ? $namePost->detail->name : ''}}</td>
-                                </tr>
-                            @endforeach
-                            
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-    </div>
-    @endif
-</div>
+<h4> <a href="{{route('admin.post.create')}}" class="btn btn-primary">Thêm bài viết</a></h4>
 
 <h4>Danh sách bài viết:</h4>
 <div class="col-lg-12">
@@ -83,6 +28,7 @@
                             <th>Name</th>
                             <th>Content</th>
                             <th>Author</th>
+                            <th>Views</th>
                             <th>Create_at</th>
                             <th>Detail</th>
                             <th>Edit</th>
@@ -97,14 +43,15 @@
                                 <td>{{$post->name}}</td>
                                 <td>{{$post->content}}</td>
                                 <td>{{$post->author}}</td>
+                                <td>{{$post->views}}</td>
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->detail ? $post->detail->name : 'Warning detail'}}</td>
                                 <td><a href="{{ route('admin.post.edit', ['id' => $post->id]) }}" class="btn btn-warning">Edit</a></td>
                                 <td>
-                                    <form action="{{route('admin.post.destroy',$post->id)}}" method="post">
+                                    <form action="{{route('admin.post.destroy',$post->id)}}" method="post" class="delete-form">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="btn btn-danger">Del</button>
+                                        <button type="submit" class="delete-post btn btn-danger" data-id="{{$post->id}}">Del</button>
                                     </form>
                                 </td>
          
@@ -118,4 +65,37 @@
     </div>
     <!-- /.panel -->
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.delete-post').on('click',function(e){
+            e.preventDefault();
+
+            let postID = $(this).data('id');
+            if(confirm("Bạn có chắc muốn xóa bài viết!")){
+                let code = prompt("Vui lòng nhập mật khẩu:");
+                if(code === "apche123"){
+                    $.ajax({
+                        url:'/admin/post/'+ postID,
+                        type : 'DELETE',
+                        data:{
+                            "_token":"{{ csrf_token()}}"
+                        },
+                        success:function(response){
+                            alert(response.message);
+                            location.reload();
+                        },
+                        error:function(response){
+                            alert("Xóa không thành công,vui lòng thử lại!");
+                        }
+                    });
+                }else{
+                    alert("Nhập mật khẩu sai");
+                }
+            }
+            
+        });
+    });
+</script>
 @endsection

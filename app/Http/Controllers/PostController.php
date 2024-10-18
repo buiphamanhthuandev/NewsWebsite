@@ -14,16 +14,13 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $posts = Post::with('category')->get();
 
         //lấy danh sách theo tên trả về table
-        $namePosts = null;
-        if($request->has('namePost')){
-            $namePosts = Post::where('name','LIKE','%'.$request->namePost.'%')->with('category')->get();
-        }
-        return view('admin.post.index',compact('posts','namePosts'));
+        
+        return view('admin.post.index',compact('posts'));
     }
 
     /**
@@ -83,13 +80,6 @@ class PostController extends Controller
         return view('admin.post.edit',compact('post_id','categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -113,8 +103,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
-        return redirect(route('admin.post.index'))->with('success','del post thành công!');
+        $post = Post::find($id);
+        if($post->delete()){
+            return response()->json(['message' => 'Xóa bài viết thành công!']);
+        }else{
+            return response()->json(['message' => 'Xóa bài viết không thành công,thử lại!']);
+        }
     }
 }

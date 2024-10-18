@@ -25,14 +25,8 @@ class DetailController extends Controller
         if($request->has('category_id')){
             $category_id = Category::findOrFail($request->category_id);
         }
-        
-        //lấy danh sách theo tên trả table tìm kiếm
-        $nameCategories = null;
-        if($request->has('nameCategory')){
-            
-            $nameCategories = Category::where('name','LIKE','%'.$request->nameCategory.'%')->get();
-        }
-        return view('admin.detail.index',compact('categories','category_id','nameCategories'));
+
+        return view('admin.detail.index',compact('categories','category_id'));
     }
 
     /**
@@ -102,16 +96,29 @@ class DetailController extends Controller
         return redirect(route('admin.detail.index'))->with('success','Category update thành công');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function checkPostCount($id){
+        $category = Category::find($id);
+
+        $postCount = $category ? $category->posts()->count() : 0;
+        return response()->json(['postCount'=>$postCount]);
+    }
+
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->update(['state' => 0]);
-        return redirect(route('admin.detail.index'))->with('success','category delete thành công');
+        $category = Category::find($id);
+
+        $postCount = $category ? $category->posts()->count() : 0;
+
+        if($postCount>0){
+            $category->posts()->update(['category_id' => null]);
+        }
+
+       // $category->update(['state' => 0]);
+        if ($category->delete()) {
+            return response()->json(['message' => 'Xóa danh mục thành công!']);
+        } else {
+            return response()->json(['message' => 'Xóa không thành công, vui lòng thử lại.'], 500);
+        }
+       // return redirect(route('admin.detail.index'))->with('success','category delete thành công');
     }
 }

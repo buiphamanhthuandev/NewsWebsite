@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SubscribeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',function () {
-    return view('new.home.index');
+    return view('welcome');
 });
 
 
@@ -56,11 +60,37 @@ Route::prefix('/admin/post')->name('admin.post.')->group(function(){
 Route::prefix('/admin/detail')->name('admin.detail.')->group(function(){
     Route::get('/',[DetailController::class,'index'])->name('index');
 
-    Route::post('searchDetail',[DetailController::class,'index'])->name('searchDetail');
+    Route::get('/checkPostCount/{id}',[DetailController::class,'checkPostCount'])->name('checkPostCount');
 
     Route::post('/store',[DetailController::class,'store'])->name('store');
 
     Route::put('/{id}',[DetailController::class,'update'])->name('update');
 
     Route::delete('/{id}',[DetailController::class,'destroy'])->name('destroy');
+});
+
+//Route manager contact
+Route::prefix('/admin/contact')->name('admin.contact.')->group(function(){
+    Route::get('/',[ContactController::class,'index'])->name('index');
+
+    Route::post('/searchContact',[ContactController::class,'index'])->name('searchContact');
+
+    Route::delete('/{id}',[ContactController::class,'destroy'])->name('destroy');
+});
+//Route manager subscribe
+Route::prefix('/admin/subscribe')->name('admin.subscribe.')->group(function(){
+    Route::get('/',[SubscribeController::class,'index'])->name('index');
+});
+//Route manager comment
+Route::prefix('/admin/comment')->name('admin.comment.')->group(function(){
+    Route::get('/',[CommentController::class,'index'])->name('index');
+});
+
+
+//Route manager account
+Route::prefix('/admin/user')->name('admin.user.')->group(function(){
+    Route::get('/',[UserController::class,'index'])->name('index');
+
+
+    Route::delete('/{id}',[UserController::class,'destroy'])->name('destroy');
 });
