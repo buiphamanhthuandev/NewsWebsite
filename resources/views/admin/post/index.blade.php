@@ -41,11 +41,11 @@
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->image}}</td>
                                 <td>{{$post->name}}</td>
-                                <td>{{$post->content}}</td>
+                                <td>{!!$post->content!!}</td>
                                 <td>{{$post->author}}</td>
                                 <td>{{$post->views}}</td>
                                 <td>{{$post->created_at}}</td>
-                                <td>{{$post->detail ? $post->detail->name : 'Warning detail'}}</td>
+                                <td>{{$post->category ? $post->category->name : 'Warning detail'}}</td>
                                 <td><a href="{{ route('admin.post.edit', ['id' => $post->id]) }}" class="btn btn-warning">Edit</a></td>
                                 <td>
                                     <form action="{{route('admin.post.destroy',$post->id)}}" method="post" class="delete-form">

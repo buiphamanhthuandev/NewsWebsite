@@ -6,14 +6,11 @@ use App\Models\Category;
 use App\Models\Detail;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $posts = Post::with('category')->get();
@@ -23,54 +20,47 @@ class PostController extends Controller
         return view('admin.post.index',compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         $categories = Category::where('state',1)->get();
         return view('admin.post.create',compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate([
             'name'=>'required',
             'content'=>'required',
             'author'=>'required',
             'content'=>'required',
-            'detail_id'=>'required',
-            'image'=>'required'
-        ]);
+            'category_id'=>'required',
+            'image'=>'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);     
+        if($request->hasFile('image')){
+            // Lấy tên gốc của file
+            $originalName = pathinfo($request->image->getClientOriginalName(), PATHINFO_FILENAME);
+            // Lấy phần mở rộng của file
+            $extension = $request->image->extension();
+            // Tạo tên file mới bao gồm thời gian và tên gốc
+            $imageName = $originalName . '_' . time() . '.' . $extension;  
+            $request->image->move(public_path('images'), $imageName);
+            $data['image'] = $imageName; // Gán tên file cho dữ liệu để lưu vào CSDL
+        }
+
+        $data['slug'] = Str::slug($data['name'], '');
+
         $post = Post::create($data);
+
         return redirect(route('admin.post.index'))->with('success','create post success');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //lấy danh sách theo id trả về form
@@ -90,17 +80,15 @@ class PostController extends Controller
             'detail_id'=>'required',
             'image'=>'nullable|image|mimes|:jpeg|png|jpg|gif|max:2048'
         ]);
+        $data['slug'] = Str::slug($data['name'], '-');
+
         $post = Post::findOrFail($id);
+
         $post->update($data);
+
         return redirect(route('admin.post.index'))->with('success','post update thành công');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $post = Post::find($id);

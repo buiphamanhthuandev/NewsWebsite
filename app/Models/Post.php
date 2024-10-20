@@ -16,6 +16,7 @@ class Post extends Model
         'image',
         'author',
         'views',
+        'slug',
         'created_at',
         'category_id'
     ];
@@ -25,5 +26,8 @@ class Post extends Model
     }
     public function comment(){
         return $this->hasMany(Comment::class,'post_id');
+    }
+    public function getKeyRouteName(){
+        return 'slug';
     }
 }
