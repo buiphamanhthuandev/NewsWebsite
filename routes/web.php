@@ -31,7 +31,9 @@ Route::prefix('/admin/home')->name('admin.home.')->group(function(){
 
     Route::get('/',[HomeController::class,'index'])->name('index');
 
-    Route::post('/searchContact',[HomeController::class,'index'])->name('searchContact');
+    Route::get('/ChartPost',[HomeController::class,'getChartPost'])->name('ChartPost');
+
+    Route::get('/ChartCategory',[HomeController::class,'getChartPieCategory'])->name('ChartCategory');
 
     Route::delete('/{id}',[HomeController::class,'destroy'])->name('destroy');
 });
@@ -90,7 +92,6 @@ Route::prefix('/admin/comment')->name('admin.comment.')->group(function(){
 //Route manager account
 Route::prefix('/admin/user')->name('admin.user.')->group(function(){
     Route::get('/',[UserController::class,'index'])->name('index');
-
 
     Route::delete('/{id}',[UserController::class,'destroy'])->name('destroy');
 });
